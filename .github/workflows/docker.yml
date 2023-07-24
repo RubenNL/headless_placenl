@@ -5,12 +5,12 @@ permissions:
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, v3.2.0 ]
     paths-ignore:
       - '*.md'
       - 'docker-compose.yml'
 env:
-  REGISTRY_IMAGE: ghcr.io/tintin10q/headless-henk
+  REGISTRY_IMAGE: ghcr.io/rubennl/headless_placenl
 jobs:
   build:
     name: build
@@ -87,7 +87,7 @@ jobs:
       - name: Create manifest list and push
         working-directory: /tmp/digests
         run: |
-          docker buildx imagetools create -t ${{ env.REGISTRY_IMAGE }} \
+          docker buildx imagetools create -t ${{ env.REGISTRY_IMAGE }}:3.2.0 \
             $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
       - name: Inspect image
         run: |
