@@ -46,9 +46,9 @@ jobs:
       - name: replace
         run: |
           ORIGINAL=${{matrix.platform}}
-          echo $ORIGINAL
+          echo "ORIGINAL=$ORIGINAL"
           REPLACED=$(echo '$ORIGINAL' | tr '/' '-')
-          echo $REPLACED
+          echo "REPLACED=$REPLACED"
           echo "PLATFORM=$REPLACED" >> $GITHUB_OUTPUT
       - name: Build and push by digest
         id: build
