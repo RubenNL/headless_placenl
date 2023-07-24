@@ -44,6 +44,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: replace
+        id: replace
         run: |
           ORIGINAL=${{matrix.platform}}
           echo "ORIGINAL=$ORIGINAL"
