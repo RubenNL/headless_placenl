@@ -43,6 +43,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: replace
+        run: |
+          echo ${{matrix.platform}}
+          REPLACED=${${{matrix.platform}}//\//-}
+          echo $REPLACED
+          echo "PLATFORM=$REPLACED" >> $GITHUB_OUTPUT
       - name: Build and push by digest
         id: build
         uses: docker/build-push-action@v4
@@ -51,8 +57,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
-          cache-from: type=registry,ref=${{ env.REGISTRY_IMAGE }}:buildcache-${matrix.platform//\//-}
-          cache-to: type=registry,ref=${{ env.REGISTRY_IMAGE }}:buildcache-${matrix.platform},mode=max
+          cache-from: type=registry,ref=${{ env.REGISTRY_IMAGE }}:buildcache-${{steps.replace.outputs.PLATFORM}}
+          cache-to: type=registry,ref=${{ env.REGISTRY_IMAGE }}:buildcache-${{steps.replace.outputs.PLATFORM}},mode=max
 
       - run: |
           mkdir -p /tmp/digests
