@@ -45,8 +45,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: replace
         run: |
-          echo ${{matrix.platform}}
-          REPLACED=${${{matrix.platform}}//\//-}
+          ORIGINAL=${{matrix.platform}}
+          echo $ORIGINAL
+          REPLACED=$(echo '$ORIGINAL' | tr '/' '-')
           echo $REPLACED
           echo "PLATFORM=$REPLACED" >> $GITHUB_OUTPUT
       - name: Build and push by digest
